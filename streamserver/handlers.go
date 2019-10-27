@@ -16,7 +16,7 @@ func testPageHandler(w http.ResponseWriter, r *http.Request, p httprouter.Params
 	t.Execute(w, nil)
 }
 
-func streamHandler(w http.ResponseWriter, r *http.Request, p *httprouter.Params) {
+func streamHandler(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	vid := p.ByName("vid-id")
 	vl := VIDEO_DIR + vid
 	video, err := os.Open(vl)
@@ -31,6 +31,6 @@ func streamHandler(w http.ResponseWriter, r *http.Request, p *httprouter.Params)
 	defer video.Close()
 }
 
-func uploadHandler(w http.ResponseWriter, r *http.Request, p *httprouter.Params) {
+func uploadHandler(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 
 }
