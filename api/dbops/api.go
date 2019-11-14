@@ -1,8 +1,11 @@
 package dbops
 
 import (
+	"VideoServer/api/defs"
+	"VideoServer/api/utils"
 	"database/sql"
 	"log"
+	"time"
 )
 
 func AddUserCredential(loginName string, pwd string) error {
@@ -45,4 +48,64 @@ func DeleteUser(loginName string, pwd string) error {
 	}
 	defer stmtDel.Close()
 	return nil
+}
+
+func AddNewVideo(aid int, name string) (*defs.VideoInfo, error) {
+	//	create uuid
+	vid, err := utils.NewUUID()
+	if err != nil {
+		return nil, err
+	}
+	t := time.Now()
+	ctime := t.Format("Jan 02 2006, 15:04:05")
+	stmtIns, err := dbConn.Prepare("INSERT INTO video_info (id, author_id, name, display_time)")
+	if err != nil {
+		return nil, err
+	}
+	_, err = stmtIns.Exec(vid, aid, name, ctime)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &defs.VideoInfo{
+		Id:           vid,
+		AuthorId:     aid,
+		Name:         name,
+		DisplayCtime: ctime,
+	}
+
+	defer stmtIns.Close()
+	return res, nil
+}
+
+func GetVideoInfo(vid string) (*defs.VideoInfo, error) {
+	stmtOut, err := dbConn.Prepare("SELECT author_id, name, display_ctime FROM video_info WHERE id=?")
+
+	var aid int
+	var dct string
+	var name string
+
+	err = stmtOut.QueryRow(vid).Scan(&aid, &name, &dct)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+
+	defer stmtOut.Close()
+
+	res := &defs.VideoInfo{
+		Id:           vid,
+		AuthorId:     aid,
+		Name:         name,
+		DisplayCtime: dct,
+	}
+
+	return res, nil
+}
+
+func ListVideoInfo(uname string, from, to int) ([]*defs.VideoInfo, error) {
+
 }
