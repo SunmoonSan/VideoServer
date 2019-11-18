@@ -73,6 +73,5 @@ func IsSessionExpired(sid string) (string, bool) {
 		sessionMap.Store(sid, ss)
 		return ss.Username, false
 	}
-
 	return "", true
 }
