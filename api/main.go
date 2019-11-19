@@ -26,6 +26,7 @@ func RegisterHandlers() *httprouter.Router {
 
 	router.POST("/user", CreateUser)
 	router.POST("/user/:username", Login)
+	router.GET("/user/:username", GetUserInfo)
 	return router
 }
 
