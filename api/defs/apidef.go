@@ -51,10 +51,10 @@ type VideoInfo struct {
 }
 
 type Comment struct {
-	Id       string
-	VideoId  string
-	AuthorId int
-	Content  string
+	Id       string `json:"id"`
+	VideoId  string `json:"video_id"`
+	Author string `json:"author"`
+	Content  string `json:"content"`
 }
 
 type SimpleSession struct {
