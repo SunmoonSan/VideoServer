@@ -39,7 +39,7 @@ func GetUserCredential(loginName string) (string, error) {
 func DeleteUser(loginName string, pwd string) error {
 	stmtDel, err := dbConn.Prepare("DELETE FROM users WHERE login_name=? AND pwd=?")
 	if err != nil {
-		log.Printf("%s", err)
+		log.Printf("DeleteUser error: %s", err)
 		return err
 	}
 	_, err = stmtDel.Exec(loginName, pwd)
@@ -88,7 +88,7 @@ func AddNewVideo(aid int, name string) (*defs.VideoInfo, error) {
 	}
 	t := time.Now()
 	ctime := t.Format("Jan 02 2006, 15:04:05")
-	stmtIns, err := dbConn.Prepare("INSERT INTO video_info (id, author_id, name, display_time)")
+	stmtIns, err := dbConn.Prepare("INSERT INTO video_info (id, author_id, name, display_time) VALUES (?, ?, ?, ?)")
 	if err != nil {
 		return nil, err
 	}
@@ -235,11 +235,10 @@ func ListComments(vid string, from, to int) ([]*defs.Comment, error) {
 			Author:  name,
 			Content: content,
 		}
-
 		res = append(res, c)
-
-		defer stmtOut.Close()
-		return res, nil
 	}
+
+	defer stmtOut.Close()
+	return res, nil
 
 }

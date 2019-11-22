@@ -36,6 +36,14 @@ type SignedIn struct {
 	SessionId string `json:"session_id"`
 }
 
+type VideosInfo struct {
+	Videos []*VideoInfo `json:"videos"`
+}
+
+type Comments struct {
+	Comments []*Comment `json:"comments"`
+}
+
 // Data model
 type User struct {
 	Id        int

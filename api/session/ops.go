@@ -47,6 +47,8 @@ func GenerateNewSessionId(un string) string {
 	ss := defs.SimpleSession{Username: un, TTL: ttl}
 	sessionMap.Store(id, ss)
 	dbops.InsertSession(id, ttl, un)
+
+	return id
 }
 
 func IsSessionExpired(sid string) (string, bool) {
