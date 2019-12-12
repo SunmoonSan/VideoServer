@@ -4,6 +4,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"html/template"
 	"io"
@@ -54,8 +55,8 @@ func uploadHandler(w http.ResponseWriter, r *http.Request, p httprouter.Params) 
 		return
 	}
 
-	//fn := p.ByName("vid-id")
-
+	fn := p.ByName("vid-id")
+	fmt.Println(fn)
 	err = ioutil.WriteFile(VIDEO_DIR+"test.mp4", data, 0666)
 	if err != nil {
 		log.Printf("Write file error: %v", err)
